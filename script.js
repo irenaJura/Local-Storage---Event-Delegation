@@ -1,6 +1,8 @@
 const addItems = document.querySelector('.add-items'); // form
 const itemsList = document.querySelector('.plates'); // ul
-const items = []; // store data in an array of objects, name and done status
+//const items = []; // store data in an array of objects, name and done status
+// try to get items from local storage or fall back to empyt array
+const items = JSON.parse(localStorage.getItem('items')) || []; // parse will change them back into objects
 
 // function to add an item and make an object to put in array
 function addItem(e) {
@@ -22,6 +24,9 @@ function addItem(e) {
     // every time we add an item, we call populateList
     // which creates an li with a label
     populateList(items, itemsList);
+    // when we populate the list,
+    // we need to set items array into local storage
+    localStorage.setItem('items', JSON.stringify(items)); // key value store, both must be strings strings!
     this.reset(); // resets input
 }
 
@@ -49,3 +54,9 @@ function populateList(plates = [], platesList) {
 
 addItems.addEventListener('submit', addItem); // click the button
 
+// localStorage is an object in the browser
+// list of things saved in domain you're working on
+// after we have stringified items, we need to put it back into array of objects
+// on page load we need to populateList as very last thing
+populateList(items, itemsList);
+// items does not exist yet, so go back to const items = [] and fix it
