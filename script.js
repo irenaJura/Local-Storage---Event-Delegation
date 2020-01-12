@@ -52,8 +52,31 @@ function populateList(plates = [], platesList) {
     }).join(''); // map returns an array, but we need a string, .join('') turns everything into a big string
 }
 
-addItems.addEventListener('submit', addItem); // click the button
+// function to toggle done status
+// inputs with checkboxes not on the page on page load
+// so we add the event listener to parent elemet
+// and inside it we check if it's the actual thing we want
+// that's called event delegation
+function toggleDone(e) {
+    // check if the target matches what we're looking for
+    if (!e.target.matches('input')) return; // skip unless it's an input
+    // console.log(e.target);
+    // we wanna find the item that is checked 
+    // and change done to true and vise versa
+    // get data-index value
+    const el = e.target;
+    // console.log(el.dataset.index);
+    const index = el.dataset.index;
+    items[index].done = !items[index].done; 
+    // access done property
+    // set it to the opposite of itself
+    // again update local storage and run populateList
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList);
+}
 
+addItems.addEventListener('submit', addItem); // click the button
+itemsList.addEventListener('click', toggleDone); // listen for the click on items list (ul)
 // localStorage is an object in the browser
 // list of things saved in domain you're working on
 // after we have stringified items, we need to put it back into array of objects
