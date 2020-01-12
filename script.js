@@ -3,6 +3,9 @@ const itemsList = document.querySelector('.plates'); // ul
 //const items = []; // store data in an array of objects, name and done status
 // try to get items from local storage or fall back to empyt array
 const items = JSON.parse(localStorage.getItem('items')) || []; // parse will change them back into objects
+const deleteButton = document.querySelector('.delete');
+const helpButtons = document.querySelectorAll('.help-buttons');
+
 
 // function to add an item and make an object to put in array
 function addItem(e) {
@@ -75,8 +78,31 @@ function toggleDone(e) {
     populateList(items, itemsList);
 }
 
+// function that deletes the whole list
+// from local storage and the html
+function deleteList(e) {
+    localStorage.clear();
+    populateList([], itemsList);
+}
+
+// function to toggle all items to checked or unchecked,
+// depending on whick button was clicked
+function handleButtons(e) {  
+    // console.log(e.target.name);
+    // we need to know the index
+    items.forEach((item, index) => {
+      e.target.name === 'checkAll'
+        ? (items[index].done = true)
+        : (items[index].done = false)
+    })
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList);
+  }
+
 addItems.addEventListener('submit', addItem); // click the button
 itemsList.addEventListener('click', toggleDone); // listen for the click on items list (ul)
+deleteButton.addEventListener('click', deleteList); // click on delete button
+helpButtons.forEach(button => button.addEventListener('click', handleButtons)); // add listener on both check and uncheck buttons
 // localStorage is an object in the browser
 // list of things saved in domain you're working on
 // after we have stringified items, we need to put it back into array of objects

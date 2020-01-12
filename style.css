@@ -77,3 +77,12 @@ html {
     outline: 0;
     border: 1px solid rgba(0,0,0,0.1);
   }
+
+ .additional-btns {
+     margin-top: 10px;
+ }
+
+ input[type="submit"]:hover {
+    background-color: #FFF;
+    border-color: black;
+ }
